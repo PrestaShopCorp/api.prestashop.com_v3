@@ -5,7 +5,9 @@ namespace App\Http\Controllers\API;
 use App\Events\CheckPrestaShopVersionUpdatesQuery;
 use App\Events\SendTrackingToSandrineCommand;
 use App\Http\Controllers\Controller;
+use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class VersionController extends Controller
 {
@@ -13,7 +15,7 @@ class VersionController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function checkVersion(Request $request): void
+    public function checkVersion(Request $request): ResponseFactory|Response
     {
         $parameters = [
             'address' => isset($_SERVER['HTTP_X_FORWARDED_FOR']) && preg_match('/^10\.2/', $_SERVER['REMOTE_ADDR'])
@@ -27,7 +29,8 @@ class VersionController extends Controller
         ];
 
         event($query = new CheckPrestaShopVersionUpdatesQuery($parameters));
-        echo $query->getResult();
         event(new SendTrackingToSandrineCommand($parameters));
+
+        return response($query->getResult(), 200);
     }
 }

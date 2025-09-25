@@ -80,7 +80,7 @@ class CheckPrestaShopVersionRetroCompat extends Command
                 break;
             }
             if (str_starts_with($matches[1], '/version/check_version.php')) {
-                //$this->checkVersion($matches[1]);
+                $this->checkVersion($matches[1]);
             } else {
                 echo "Testing Call: " . $matches[1] . "\n\n";
             }
