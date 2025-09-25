@@ -14,7 +14,7 @@
 		<div class="panel-heading"><span class="icon-update"></span>{{ l('PrestaShop Update') }}</div>
 		<div class="panel-body">
 			<p>{{ l('You can update to PrestaShop ') }}{{ $new_version_check['version'] }}</p>
-			<a class="btn btn-default" target="_blank" href="{{ $new_version_check['link'] }}">{{ l('Download now ') }}</a>
+			<a class="btn btn-default" target="_blank" href="{{ $new_version_check['link'] }}" >{{ l('Download now ') }}</a>
 		</div>
 	</div>
 @else
