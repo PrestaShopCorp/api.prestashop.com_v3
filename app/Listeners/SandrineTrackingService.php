@@ -14,11 +14,36 @@ class SandrineTrackingService
     {
         $parameters = $event->getParameters();
         try {
+            $this->checkParameters($parameters);
             $this->sendTrackingToSandrine($parameters);
             $event->setSuccess(true);
         } catch (Exception $exception) {
             $event->setSuccess(false);
             $event->setError($exception->getMessage());
+        }
+    }
+
+    /**
+     * @param array $parameters
+     * @return void
+     * @throws Exception
+     */
+    private function checkParameters(array $parameters): void
+    {
+        if (!isset($parameters['version'])) {
+            throw new Exception('Parameter "version" is required.');
+        }
+        if (!isset($parameters['iso_code'])) {
+            throw new Exception('Parameter "iso_code" is required.');
+        }
+        if (!isset($parameters['activity'])) {
+            throw new Exception('Parameter "activity" is required.');
+        }
+        if (!isset($parameters['address'])) {
+            throw new Exception('Parameter "address" is required.');
+        }
+        if (!isset($parameters['referer'])) {
+            throw new Exception('Parameter "referer" is required.');
         }
     }
 
