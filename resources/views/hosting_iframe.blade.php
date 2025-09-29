@@ -3,7 +3,6 @@
     <link href="{{ asset('css/hosting_iframe.css') }}" rel="stylesheet" type="text/css">
 </head>
 <body>
-Lala
 @if ($parameters['iso_lang'] == 'fr')
     <a href="http://www.ovh.com/fr/web/prestashop/" target="_blank">
         <img src="/img/ovh.png" alt="OVH" />
