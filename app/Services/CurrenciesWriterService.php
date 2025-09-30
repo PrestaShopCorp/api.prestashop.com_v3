@@ -16,6 +16,7 @@ class CurrenciesWriterService
      */
     public function getDailyCurrencyFileBuffer(array $rates): string
     {
+        libxml_use_internal_errors(true);
         $xmlString = '<?xml version="1.0" encoding="UTF-8"?><currencies><source iso_code="' . self::BASE_CURRENCY . '" /></currencies>';
         $xml = new SimpleXMLElement($xmlString);
 

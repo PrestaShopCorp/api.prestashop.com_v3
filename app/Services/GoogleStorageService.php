@@ -40,6 +40,19 @@ class GoogleStorageService
     /**
      * @param string $bucketName
      * @param string $fileName
+     * @return StorageObject
+     */
+    public function getFileOnBucket(string $bucketName, string $fileName): StorageObject
+    {
+        $bucketGenericName = $this->getGeneralBucket($bucketName);
+        $bucket = $this->client->bucket($bucketGenericName);
+        $storageName = ($bucketGenericName == getenv('GOOGLE_PRIVATE_BUCKET') ? getenv('GOOGLE_MACHINE_ID_') . '/' : '') . $bucketName . '/' . $fileName;
+        return $bucket->object($storageName);
+    }
+
+    /**
+     * @param string $bucketName
+     * @param string $fileName
      * @param string $fileContents
      * @param array $metadata
      * @return StorageObject
@@ -79,5 +92,19 @@ class GoogleStorageService
         $bucket = $this->client->bucket($bucket);
         $isWritable = $bucket->isWritable();
         return ['isWritable' => $isWritable];
+    }
+
+    /**
+     * @param string $bucketName
+     * @param string $fileName
+     * @return bool
+     */
+    public function isFileExists(string $bucketName, string $fileName): bool
+    {
+        $bucketGenericName = $this->getGeneralBucket($bucketName);
+        $bucket = $this->client->bucket($bucketGenericName);
+        $storageName = ($bucketGenericName == getenv('GOOGLE_PRIVATE_BUCKET') ? getenv('GOOGLE_MACHINE_ID_') . '/' : '') . $bucketName . '/' . $fileName;
+        $object = $bucket->object($storageName);
+        return $object->exists();
     }
 }

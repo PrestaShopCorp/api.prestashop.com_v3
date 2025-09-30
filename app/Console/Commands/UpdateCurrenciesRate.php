@@ -39,6 +39,25 @@ class UpdateCurrenciesRate extends Command
     }
 
     /**
+     * @return array
+     */
+    private function getOldRates(): array
+    {
+        $oldRates = [];
+        $buffer = $this->storageService->getFileOnBucket('api/currencies', 'currency.xml')->downloadAsString();
+        $currencies = explode("\n", $buffer);
+        foreach($currencies as $currency) {
+            if (!($pos = strpos($currency, 'currency iso_code')) || !($pos2 = strpos($currency, 'rate="'))) {
+                continue;
+            }
+            $currencyCode = substr($currency, $pos + 19, 3);
+            $rate = (float) substr($currency, $pos2 + 6);
+            $oldRates[$currencyCode] = $rate;
+        }
+        return $oldRates;
+    }
+
+    /**
      * Execute the console command.
      */
     public function handle(): void
@@ -50,6 +69,28 @@ class UpdateCurrenciesRate extends Command
             $rates = $this->converterService->getRates();
             $buffer = $this->currenciesWriterService->getDailyCurrencyFileBuffer($rates);
             $this->storageService->pushOnBucket('api/currencies', 'currency_' . $date . '.xml', $buffer);
+            if (!$this->storageService->isFileExists('api/currencies', 'currency.xml')) {
+                $this->storageService->pushOnBucket('api/currencies', 'currency.xml', $buffer);
+            } else {
+                $oldRates = $this->getOldRates();
+                foreach ($oldRates as $isoCurrency => $rate) {
+                    if (!isset($rates[$isoCurrency])) {
+                        echo "ISO currency $isoCurrency missing for currencies\n";
+                        die();
+                    } else {
+                        $difference = (float)(100 * ($rate - $rates[$isoCurrency]) / $rates[$isoCurrency]);
+                        $diff = round($difference, 2);
+                        if ($diff > 10) {
+                            echo "ISO currency $isoCurrency changed too much\n";
+                            die();
+                        }
+                        echo "Currency $isoCurrency: " . $diff . "%\n";
+                    }
+                }
+                $this->storageService->pushOnBucket('api/currencies', 'currency.xml', $buffer);
+            }
+
+
             echo "Success !\n";
         } catch (\Exception $e) {
             echo "Error: ". $e->getMessage() . "\n";
