@@ -9,19 +9,12 @@ class CurrenciesWriterService
 {
     const BASE_CURRENCY = 'EUR';
 
-    private FixerIoConverterService $converter;
-
-    public function __construct(FixerIoConverterService $converter)
-    {
-        $this->converter = $converter;
-    }
-
     /**
-     * @param float[] $rates indexed by currency code
-     *
+     * @param array $rates
+     * @return string
      * @throws Exception
      */
-    private function writeCurrencies(array $rates): void
+    public function getDailyCurrencyFileBuffer(array $rates): string
     {
         $xmlString = '<?xml version="1.0" encoding="UTF-8"?><currencies><source iso_code="' . self::BASE_CURRENCY . '" /></currencies>';
         $xml = new SimpleXMLElement($xmlString);
@@ -45,18 +38,6 @@ class CurrenciesWriterService
             }
             throw new Exception($errorMessage);
         }
-        fwrite(fopen('currencies.xml.new', 'w'), $dom->saveXML());
-    }
-
-
-    /**
-     * @return void
-     * @throws Exception
-     */
-    public function createDailyCurrencyFile(): void
-    {
-        $this->converter->setBaseCurrency(self::BASE_CURRENCY);
-        $rates = $this->converter->getRates();
-        $this->writeCurrencies($rates);
+        return $dom->saveXML();
     }
 }

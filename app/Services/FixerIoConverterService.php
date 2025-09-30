@@ -14,7 +14,7 @@ class FixerIoConverterService implements ConverterInterface
     /**
      * @param string $baseCurrency
      */
-    public function setBaseCurrency($baseCurrency)
+    public function setBaseCurrency($baseCurrency): void
     {
         $this->baseCurrency = $baseCurrency;
     }
