@@ -1,30 +1,12 @@
 <?php
 
-namespace App\Listeners;
+namespace App\Services;
 
-use App\Events\CheckPrestaShopVersionUpdatesQuery;
 use Exception;
 use SimpleXMLElement;
 
-class PrestashopVersionUpdateService
+class PrestashopVersionCheckerService
 {
-    /**
-     * Handle the event.
-     */
-    public function handle(CheckPrestaShopVersionUpdatesQuery $event): void
-    {
-        $parameters = $event->getParameters();
-        try {
-            $this->checkParameters($parameters);
-            $buffer = $this->sendPrestaShopVersionUpdateFrame($parameters);
-            $event->setResult($buffer);
-            $event->setSuccess(true);
-        } catch (Exception $exception) {
-            $event->setSuccess(false);
-            $event->setError($exception->getMessage());
-        }
-    }
-
     /**
      * @param array $parameters
      * @return void
@@ -40,16 +22,6 @@ class PrestashopVersionUpdateService
         }
     }
 
-    /**
-     * @param array $parameters
-     * @return string
-     */
-    private function sendPrestaShopVersionUpdateFrame(array $parameters): string
-    {
-        getTranslations($parameters['iso_code']);
-        $newVersionCheck = $this->checkNewVersion($parameters['version'], $parameters['iso_code']);
-        return view('prestashop_version_update', ['parameters' => $parameters, 'new_version_check' => $newVersionCheck])->render();
-    }
 
     /**
      * @return SimpleXMLElement|false
@@ -99,5 +71,18 @@ class PrestashopVersionUpdateService
     {
         $channels = $this->getPrestaShopChannels();
         return $this->getNewVersionInformations($version, $isoCode, $channels);
+    }
+
+    /**
+     * @param array $parameters
+     * @return string
+     * @throws Exception
+     */
+    public function checkPrestaShopVersion(array $parameters): string
+    {
+        $this->checkParameters($parameters);
+        getTranslations($parameters['iso_code']);
+        $newVersionCheck = $this->checkNewVersion($parameters['version'], $parameters['iso_code']);
+        return view('prestashop_version_update', ['parameters' => $parameters, 'new_version_check' => $newVersionCheck])->render();
     }
 }

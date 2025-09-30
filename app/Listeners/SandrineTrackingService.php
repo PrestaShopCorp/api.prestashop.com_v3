@@ -2,7 +2,7 @@
 
 namespace App\Listeners;
 
-use App\Events\SendTrackingToSandrineCommand;
+use App\Events\PrestaShopVersionChecked;
 use Exception;
 
 class SandrineTrackingService
@@ -10,7 +10,7 @@ class SandrineTrackingService
     /**
      * Handle the event.
      */
-    public function handle(SendTrackingToSandrineCommand $event): void
+    public function handle(PrestaShopVersionChecked $event): void
     {
         $parameters = $event->getParameters();
         try {

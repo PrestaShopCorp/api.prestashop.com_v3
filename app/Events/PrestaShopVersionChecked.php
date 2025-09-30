@@ -3,11 +3,10 @@
 namespace App\Events;
 
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class CheckPrestaShopVersionUpdatesQuery
+class PrestaShopVersionChecked
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -22,7 +21,6 @@ class CheckPrestaShopVersionUpdatesQuery
     public function __construct(array $parameters)
     {
         $this->setParameters($parameters);
-        $this->setResult('');
         $this->setSuccess(false);
         $this->setError('');
     }
@@ -41,23 +39,6 @@ class CheckPrestaShopVersionUpdatesQuery
     public function setParameters(array $parameters): void
     {
         $this->parameters = $parameters;
-    }
-
-    /**
-     * @return string
-     */
-    public function getResult(): string
-    {
-        return $this->result;
-    }
-
-    /**
-     * @param string $result
-     * @return void
-     */
-    public function setResult(string $result): void
-    {
-        $this->result = $result;
     }
 
     /**
@@ -92,17 +73,5 @@ class CheckPrestaShopVersionUpdatesQuery
     public function setError(string $error): void
     {
         $this->error = $error;
-    }
-
-    /**
-     * Get the channels the event should broadcast on.
-     *
-     * @return array<int, \Illuminate\Broadcasting\Channel>
-     */
-    public function broadcastOn(): array
-    {
-        return [
-            new PrivateChannel('channel-name'),
-        ];
     }
 }

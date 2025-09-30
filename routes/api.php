@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\API\InstallationController;
-use App\Http\Controllers\API\VersionController;
+use App\Http\Controllers\API\InstallationSupportController;
+use App\Http\Controllers\API\PrestashopVersionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -10,5 +10,5 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 
-Route::get('/version/check_version.php', [VersionController::class, 'checkVersion']);
-Route::get('/iframe/install.php', [InstallationController::class, 'getInstallationHelp']);
+Route::get('/version/check_version.php', [PrestashopVersionController::class, 'checkVersion']);
+Route::get('/iframe/install.php', [InstallationSupportController::class, 'getInstallationHelp']);

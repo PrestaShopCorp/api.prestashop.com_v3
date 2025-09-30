@@ -2,9 +2,8 @@
 
 namespace Tests\Unit;
 
-use App\Events\GetInstallationIFrameQuery;
-use App\Listeners\InstallationIFrameService;
 use App\Services\GeoIPService;
+use App\Services\InstallationSupportService;
 use Tests\TestCase;
 
 class GetInstallationIFrameTest extends TestCase
@@ -18,37 +17,47 @@ class GetInstallationIFrameTest extends TestCase
     {
         //Test on needed parameters
         $geoIPService = new GeoIPService();
-        $service = new InstallationIFrameService($geoIPService);
+        $installationSupportService = new InstallationSupportService($geoIPService);
 
         $parameters = [];
-        $query = new GetInstallationIFrameQuery($parameters);
-        $service->handle($query);
-        $this->assertFalse($query->isSuccess());
-        $this->assertStringContainsString('is required', $query->getError());
+        try {
+            $installationSupportService->getIFrame($parameters);
+            $this->fail();
+        } catch (\Exception $e) {
+            $this->assertStringContainsString('is required', $e->getMessage());
+        }
 
         $parameters = ['address' => '91.175.57.172', 'iso_lang' => 'en', 'step' => 'system', 'errors' => 'lala'];
-        $query = new GetInstallationIFrameQuery($parameters);
-        $service->handle($query);
-        $this->assertTrue($query->isSuccess());
-        $this->assertStringContainsString('inmotion', $query->getResult());
+        try {
+            $buffer = $installationSupportService->getIFrame($parameters);
+            $this->assertStringContainsString('inmotion', $buffer);
+        } catch (\Exception $e) {
+            $this->fail();
+        }
 
         $parameters['iso_lang'] = 'es';
-        $query = new GetInstallationIFrameQuery($parameters);
-        $service->handle($query);
-        $this->assertTrue($query->isSuccess());
-        $this->assertStringContainsString('1and1', $query->getResult());
+        try {
+            $buffer = $installationSupportService->getIFrame($parameters);
+            $this->assertStringContainsString('1and1', $buffer);
+        } catch (\Exception $e) {
+            $this->fail();
+        }
 
         $parameters['iso_lang'] = 'fr';
-        $query = new GetInstallationIFrameQuery($parameters);
-        $service->handle($query);
-        $this->assertTrue($query->isSuccess());
-        $this->assertStringContainsString('ovh', $query->getResult());
+        try {
+            $buffer = $installationSupportService->getIFrame($parameters);
+            $this->assertStringContainsString('ovh', $buffer);
+        } catch (\Exception $e) {
+            $this->fail();
+        }
 
         $parameters['step'] = '';
-        $query = new GetInstallationIFrameQuery($parameters);
-        $service->handle($query);
-        $this->assertTrue($query->isSuccess());
-        $this->assertStringContainsString('call-support', $query->getResult());
-        $this->assertStringContainsString('tuto-installation-FR', $query->getResult());
+        try {
+            $buffer = $installationSupportService->getIFrame($parameters);
+            $this->assertStringContainsString('call-support', $buffer);
+            $this->assertStringContainsString('tuto-installation-FR', $buffer);
+        } catch (\Exception $e) {
+            $this->fail();
+        }
     }
 }

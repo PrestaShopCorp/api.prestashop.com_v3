@@ -2,8 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\Events\CheckPrestaShopVersionUpdatesQuery;
-use App\Listeners\PrestashopVersionUpdateService;
+use App\Services\PrestashopVersionCheckerService;
 use Tests\TestCase;
 
 class CheckPrestaShopVersionTest extends TestCase
@@ -50,30 +49,36 @@ class CheckPrestaShopVersionTest extends TestCase
      */
     public function test_check_prestashop_version_update(): void
     {
-        $service = new PrestashopVersionUpdateService();
+        $service = new PrestashopVersionCheckerService();
 
         //Test on needed parameters
         $parameters = [];
-        $query = new CheckPrestaShopVersionUpdatesQuery($parameters);
-        $service->handle($query);
-        $this->assertFalse($query->isSuccess());
-        $this->assertStringContainsString('is required', $query->getError());
+        try {
+            $service->checkPrestaShopVersion($parameters);
+            $this->fail();
+        } catch (\Exception $e) {
+            $this->assertStringContainsString('is required', $e->getMessage());
+        }
 
         //Test on an update is available
-        $parameters = ['version' => '1.7.3.1', 'iso_code' => 'en', 'hosted_mode' => 0];
-        $query = new CheckPrestaShopVersionUpdatesQuery($parameters);
-        $service->handle($query);
-        $this->assertTrue($query->isSuccess());
-        $this->assertStringContainsString('You can update to PrestaShop', $query->getResult());
-
         //Test on PS version is written
-        preg_match("/You can update to PrestaShop ([0-9.]*)/", $query->getResult(), $matches);
-        $this->assertTrue(isset($matches[1]));
+        $parameters = ['version' => '1.7.3.1', 'iso_code' => 'en', 'hosted_mode' => 0];
+        try {
+            $buffer = $service->checkPrestaShopVersion($parameters);
+            $this->assertStringContainsString('You can update to PrestaShop', $buffer);
+            preg_match("/You can update to PrestaShop ([0-9.]*)/", $buffer, $matches);
+            $this->assertTrue(isset($matches[1]));
+        } catch (\Exception $e) {
+            $this->fail();
+        }
 
+        //Test on prestashop version is up to date
         $parameters['version'] = $matches[1];
-        $query = new CheckPrestaShopVersionUpdatesQuery($parameters);
-        $service->handle($query);
-        $this->assertTrue($query->isSuccess());
-        $this->assertStringContainsString('Your PrestaShop version is up to date', $query->getResult());
+        try {
+            $buffer = $service->checkPrestaShopVersion($parameters);
+            $this->assertStringContainsString('Your PrestaShop version is up to date', $buffer);
+        } catch (\Exception $e) {
+            $this->fail();
+        }
     }
 }

@@ -1,12 +1,10 @@
 <?php
 
-namespace App\Listeners;
+namespace App\Services;
 
-use App\Events\GetInstallationIFrameQuery;
-use App\Services\GeoIPService;
 use Exception;
 
-class InstallationIFrameService
+class InstallationSupportService
 {
     private GeoIPService $geoIPService;
 
@@ -20,19 +18,12 @@ class InstallationIFrameService
 
     /**
      * Handle the event.
+     * @throws Exception
      */
-    public function handle(GetInstallationIFrameQuery $event): void
+    public function getIFrame(array $parameters): string
     {
-        $parameters = $event->getParameters();
-        try {
-            $this->checkParameters($parameters);
-            $buffer = $this->getInstallationIFrame($parameters);
-            $event->setResult($buffer);
-            $event->setSuccess(true);
-        } catch (Exception $exception) {
-            $event->setSuccess(false);
-            $event->setError($exception->getMessage());
-        }
+        $this->checkParameters($parameters);
+        return $this->getInstallationIFrame($parameters);
     }
 
     /**
