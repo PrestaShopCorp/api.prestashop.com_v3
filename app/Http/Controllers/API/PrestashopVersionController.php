@@ -46,9 +46,8 @@ class PrestashopVersionController extends Controller
             'referer' => $request->headers->get('referer', ''),
             'activity' => $request->input('activity', 0),
             'version' => $request->input('v', ''),
-            'iso_code' => $request->input('lang', 'en'),
+            'iso_lang' => $request->input('lang', 'en'),
             'hosted_mode' => $request->input('hosted_mode', 0),
-
         ];
 
         try {

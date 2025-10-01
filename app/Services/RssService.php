@@ -28,8 +28,11 @@ class RssService
     private function getXMLInformations(array $parameters): array
     {
         $fileName = storage_path('app/public/xml/blog/blog-' . $parameters['iso_lang'] . '.xml');
-        $xml = simplexml_load_string(file_get_contents($fileName));
+        if (!is_file($fileName)) {
+            return [];
+        }
 
+        $xml = simplexml_load_string(file_get_contents($fileName));
         if (!isset($xml->channel->item) || !$xml->channel->item) {
             return [];
         }
