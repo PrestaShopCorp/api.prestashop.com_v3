@@ -45,6 +45,9 @@ class SandrineTrackingService
         if (!isset($parameters['referer'])) {
             throw new Exception('Parameter "referer" is required.');
         }
+        if (!isset($parameters['cloudflare_country_ip'])) {
+            throw new Exception('Parameter "cloudflare_country_ip" is required.');
+        }
     }
 
     /**
@@ -58,10 +61,13 @@ class SandrineTrackingService
         $activity = $parameters['activity'];
         $address = $parameters['address'];
         $referer = $parameters['referer'];
+        $cloudflareCountryIP = $parameters['cloudflare_country_ip'];
 
-        $context = stream_context_create(['http' => ['timeout' => 5]]);
-        file_get_contents('http://sandrine.prestashop.com/tracker/tracker.php?v=' . $version .
-            '&lang=' . $isoCode . '&activity=' . $activity . '&REMOTE_ADDR=' . $address .
-            '&HTTP_REFERER=' . $referer, false, $context);
+        if (false === stristr($address, 'prestashop.net')) {
+            $context = stream_context_create(['http' => ['timeout' => 5]]);
+            file_get_contents('http://sandrine.prestashop.com/tracker/tracker.php?v=' . $version .
+                '&lang=' . $isoCode . '&activity=' . $activity . '&REMOTE_ADDR=' . $address .
+                '&HTTP_REFERER=' . $referer . '&geoip=' . $cloudflareCountryIP, false, $context);
+        }
     }
 }

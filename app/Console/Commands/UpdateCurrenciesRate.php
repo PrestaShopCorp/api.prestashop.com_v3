@@ -78,8 +78,7 @@ class UpdateCurrenciesRate extends Command
                         echo "ISO currency $isoCurrency missing for currencies\n";
                         die();
                     } else {
-                        $difference = (float)(100 * ($rate - $rates[$isoCurrency]) / $rates[$isoCurrency]);
-                        $diff = round($difference, 2);
+                        $diff = round((float)(100 * ($rate - $rates[$isoCurrency]) / $rates[$isoCurrency]), 2);
                         if ($diff > 10) {
                             echo "ISO currency $isoCurrency changed too much\n";
                             die();

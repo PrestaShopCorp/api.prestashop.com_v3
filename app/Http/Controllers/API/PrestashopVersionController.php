@@ -24,15 +24,31 @@ class PrestashopVersionController extends Controller
      */
     public function checkVersion(Request $request): ResponseFactory|Response
     {
+        //Patch in order to handle original client IP after migration of SI behind CloudFlare
+        if (isset($_SERVER['HTTP_CF_CONNECTING_IP'])) {
+            $address = $_SERVER['HTTP_CF_CONNECTING_IP'];
+        } else if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            $address = $_SERVER['HTTP_X_FORWARDED_FOR'];
+        } else {
+            $address = $_SERVER['REMOTE_ADDR'] ?? '127.0.0.1';
+        }
+
+        //Try to directly collect IP localisation from CloudFlare
+        $cloudflareCountryIP = '';
+        if (isset($_SERVER['HTTP_CF_IPCOUNTRY'])) {
+            $cloudflareCountryIP = $_SERVER['HTTP_CF_IPCOUNTRY'];
+        }
+
+
         $parameters = [
-            'address' => isset($_SERVER['HTTP_X_FORWARDED_FOR']) && isset($_SERVER['REMOTE_ADDR']) && preg_match('/^10\.2/', $_SERVER['REMOTE_ADDR'])
-                ? $_SERVER['HTTP_X_FORWARDED_FOR']
-                : $_SERVER['REMOTE_ADDR'] ?? '127.0.0.1',
+            'address' => $address,
+            'cloudflare_country_ip' => $cloudflareCountryIP,
             'referer' => $request->headers->get('referer', ''),
             'activity' => $request->input('activity', 0),
             'version' => $request->input('v', ''),
             'iso_code' => $request->input('lang', 'en'),
             'hosted_mode' => $request->input('hosted_mode', 0),
+
         ];
 
         try {
