@@ -4,7 +4,6 @@ namespace App\Http\Controllers\API;
 
 use App\Events\ActionShouldBeTracked;
 use App\Http\Controllers\Controller;
-use App\Services\InstallationSupportService;
 use App\Services\RssService;
 use Exception;
 use Illuminate\Contracts\Routing\ResponseFactory;
@@ -50,7 +49,6 @@ class RssController extends Controller
             event(new ActionShouldBeTracked($parameters));
             return response($buffer, 200);
         } catch (Exception $exception) {
-            p($exception->getMessage());
             return response('Unprocessable entity', 422);
         }
     }

@@ -23,7 +23,7 @@ class SendTrackingToSandrineTest extends TestCase
         $this->assertStringContainsString('is required', $event->getError());
 
         //Test on sending command
-        $parameters = ['version' => '1.7.3.1', 'iso_code' => 'en', 'activity' => 0, 'address' => '', 'referer' => ''];
+        $parameters = ['version' => '1.7.3.1', 'iso_lang' => 'en', 'activity' => 0, 'address' => '', 'referer' => ''];
         $event = new ActionShouldBeTracked($parameters);
         $service->handle($event);
         $this->assertTrue($event->isSuccess());

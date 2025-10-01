@@ -33,8 +33,8 @@ class SandrineTrackingService
         if (!isset($parameters['version'])) {
             throw new Exception('Parameter "version" is required.');
         }
-        if (!isset($parameters['iso_code'])) {
-            throw new Exception('Parameter "iso_code" is required.');
+        if (!isset($parameters['iso_lang'])) {
+            throw new Exception('Parameter "iso_lang" is required.');
         }
         if (!isset($parameters['activity'])) {
             throw new Exception('Parameter "activity" is required.');
@@ -54,7 +54,7 @@ class SandrineTrackingService
     private function sendTrackingToSandrine(array $parameters): void
     {
         $version = $parameters['version'];
-        $isoCode = $parameters['iso_code'];
+        $isoLang = $parameters['iso_lang'];
         $activity = $parameters['activity'];
         $address = $parameters['address'];
         $referer = $parameters['referer'];
@@ -62,7 +62,7 @@ class SandrineTrackingService
         if (false === stristr($address, 'prestashop.net')) {
             $context = stream_context_create(['http' => ['timeout' => 5]]);
             file_get_contents('http://sandrine.prestashop.com/tracker/tracker.php?v=' . $version .
-                '&lang=' . $isoCode .
+                '&lang=' . $isoLang .
                 '&activity=' . $activity .
                 '&REMOTE_ADDR=' . $address .
                 '&HTTP_REFERER=' . $referer .

@@ -62,7 +62,7 @@ class CheckPrestaShopVersionTest extends TestCase
 
         //Test on an update is available
         //Test on PS version is written
-        $parameters = ['version' => '1.7.3.1', 'iso_code' => 'en', 'hosted_mode' => 0];
+        $parameters = ['version' => '1.7.3.1', 'iso_lang' => 'en', 'hosted_mode' => 0];
         try {
             $buffer = $service->checkPrestaShopVersion($parameters);
             $this->assertStringContainsString('You can update to PrestaShop', $buffer);

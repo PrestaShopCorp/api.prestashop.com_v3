@@ -17,8 +17,8 @@ class PrestashopVersionCheckerService
         if (!isset($parameters['version'])) {
             throw new Exception('Parameter "version" is required.');
         }
-        if (!isset($parameters['iso_code'])) {
-            throw new Exception('Parameter "iso_code" is required.');
+        if (!isset($parameters['iso_lang'])) {
+            throw new Exception('Parameter "iso_lang" is required.');
         }
     }
 
@@ -81,8 +81,8 @@ class PrestashopVersionCheckerService
     public function checkPrestaShopVersion(array $parameters): string
     {
         $this->checkParameters($parameters);
-        getTranslations($parameters['iso_code']);
-        $newVersionCheck = $this->checkNewVersion($parameters['version'], $parameters['iso_code']);
+        getTranslations($parameters['iso_lang']);
+        $newVersionCheck = $this->checkNewVersion($parameters['version'], $parameters['iso_lang']);
         return view('prestashop_version_update', ['parameters' => $parameters, 'new_version_check' => $newVersionCheck])->render();
     }
 }
