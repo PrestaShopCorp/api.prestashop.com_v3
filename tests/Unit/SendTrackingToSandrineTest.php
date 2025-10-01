@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\Events\PrestaShopVersionChecked;
+use App\Events\ActionShouldBeTracked;
 use App\Listeners\SandrineTrackingService;
 use Tests\TestCase;
 
@@ -17,14 +17,14 @@ class SendTrackingToSandrineTest extends TestCase
 
         //Test on needed parameters
         $parameters = [];
-        $event = new PrestaShopVersionChecked($parameters);
+        $event = new ActionShouldBeTracked($parameters);
         $service->handle($event);
         $this->assertFalse($event->isSuccess());
         $this->assertStringContainsString('is required', $event->getError());
 
         //Test on sending command
-        $parameters = ['version' => '1.7.3.1', 'iso_code' => 'en', 'activity' => 0, 'address' => '', 'referer' => '', 'cloudflare_country_ip' => ''];
-        $event = new PrestaShopVersionChecked($parameters);
+        $parameters = ['version' => '1.7.3.1', 'iso_code' => 'en', 'activity' => 0, 'address' => '', 'referer' => ''];
+        $event = new ActionShouldBeTracked($parameters);
         $service->handle($event);
         $this->assertTrue($event->isSuccess());
     }

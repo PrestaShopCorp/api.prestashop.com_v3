@@ -2,7 +2,7 @@
 
 namespace App\Listeners;
 
-use App\Events\PrestaShopVersionChecked;
+use App\Events\ActionShouldBeTracked;
 use Exception;
 
 class SandrineTrackingService
@@ -10,7 +10,7 @@ class SandrineTrackingService
     /**
      * Handle the event.
      */
-    public function handle(PrestaShopVersionChecked $event): void
+    public function handle(ActionShouldBeTracked $event): void
     {
         $parameters = $event->getParameters();
         try {
@@ -45,9 +45,6 @@ class SandrineTrackingService
         if (!isset($parameters['referer'])) {
             throw new Exception('Parameter "referer" is required.');
         }
-        if (!isset($parameters['cloudflare_country_ip'])) {
-            throw new Exception('Parameter "cloudflare_country_ip" is required.');
-        }
     }
 
     /**
@@ -61,13 +58,16 @@ class SandrineTrackingService
         $activity = $parameters['activity'];
         $address = $parameters['address'];
         $referer = $parameters['referer'];
-        $cloudflareCountryIP = $parameters['cloudflare_country_ip'];
 
         if (false === stristr($address, 'prestashop.net')) {
             $context = stream_context_create(['http' => ['timeout' => 5]]);
             file_get_contents('http://sandrine.prestashop.com/tracker/tracker.php?v=' . $version .
-                '&lang=' . $isoCode . '&activity=' . $activity . '&REMOTE_ADDR=' . $address .
-                '&HTTP_REFERER=' . $referer . '&geoip=' . $cloudflareCountryIP, false, $context);
+                '&lang=' . $isoCode .
+                '&activity=' . $activity .
+                '&REMOTE_ADDR=' . $address .
+                '&HTTP_REFERER=' . $referer .
+                (isset($parameters['cloudflare_country_ip']) ? '&geoip=' . $parameters['cloudflare_country_ip'] : ''),
+                false, $context);
         }
     }
 }

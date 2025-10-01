@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Events\PrestaShopVersionChecked;
+use App\Events\ActionShouldBeTracked;
 use App\Http\Controllers\Controller;
 use App\Services\PrestashopVersionCheckerService;
 use Exception;
@@ -53,7 +53,7 @@ class PrestashopVersionController extends Controller
 
         try {
             $buffer = $this->prestashopVersionCheckerService->checkPrestaShopVersion($parameters);
-            event(new PrestaShopVersionChecked($parameters));
+            event(new ActionShouldBeTracked($parameters));
             return response($buffer, 200);
         } catch (Exception $exception) {
             return response('Unprocessable entity', 422);

@@ -10,7 +10,6 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-
 Route::get('/version/check_version.php', [PrestashopVersionController::class, 'checkVersion']);
 Route::get('/iframe/install.php', [InstallationSupportController::class, 'getInstallationHelp']);
 Route::get('/rss/news2.php', [RssController::class, 'getRssNews']);

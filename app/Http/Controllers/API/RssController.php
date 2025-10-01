@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Events\ActionShouldBeTracked;
 use App\Http\Controllers\Controller;
 use App\Services\InstallationSupportService;
 use App\Services\RssService;
@@ -25,8 +26,8 @@ class RssController extends Controller
     public function getRssNews(Request $request): ResponseFactory|Response
     {
         //Patch in order to handle original client IP after migration of SI behind CloudFlare
-        if (isset($_SERVER['HTTP_CF_CONNECTING_IP'])) {
-            $address = $_SERVER['HTTP_CF_CONNECTING_IP'];
+        if (isset($_SERVER['CF-Connecting-IP'])) {
+            $address = $_SERVER['CF-Connecting-IP'];
         } else if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
             $address = $_SERVER['HTTP_X_FORWARDED_FOR'];
         } else {
@@ -35,15 +36,21 @@ class RssController extends Controller
 
         $parameters = [
             'address' => $address,
-            'iso_lang' => $request->input('lang', 'en'),
-            'step' => $request->input('step', false),
-            'errors' => $request->input('errors', false),
+            'version' => $request->input('v', ''),
+            'iso_lang' => strtolower($request->input('lang', 'en')),
+            'referer' => $request->headers->get('referer', ''),
+            'activity' => $request->input('activity', 0),
         ];
+        if (!in_array($parameters['iso_lang'], ['es', 'fr', 'it', 'de'])) {
+            $parameters['iso_lang'] = 'en';
+        }
 
         try {
             $buffer = $this->rssService->getNews($parameters);
+            event(new ActionShouldBeTracked($parameters));
             return response($buffer, 200);
         } catch (Exception $exception) {
+            p($exception->getMessage());
             return response('Unprocessable entity', 422);
         }
     }

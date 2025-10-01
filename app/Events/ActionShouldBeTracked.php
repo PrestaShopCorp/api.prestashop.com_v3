@@ -6,7 +6,7 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class PrestaShopVersionChecked
+class ActionShouldBeTracked
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
