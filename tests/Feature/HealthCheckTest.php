@@ -17,5 +17,11 @@ class HealthCheckTest extends TestCase
 
         $response = $this->get('/api/iframe/install.php');
         $response->assertStatus(200);
+
+        $response = $this->get('/api/rss/news2.php');
+        $response->assertStatus(200);
+
+        $response = $this->get('/api/rss2/news2.php');
+        $response->assertStatus(200);
     }
 }

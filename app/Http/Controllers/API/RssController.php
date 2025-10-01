@@ -39,6 +39,42 @@ class RssController extends Controller
             'iso_lang' => strtolower($request->input('lang', 'en')),
             'referer' => $request->headers->get('referer', ''),
             'activity' => $request->input('activity', 0),
+            'rss_type' => 14
+        ];
+        if (!in_array($parameters['iso_lang'], ['es', 'fr', 'it', 'de'])) {
+            $parameters['iso_lang'] = 'en';
+        }
+
+        try {
+            $buffer = $this->rssService->getNews($parameters);
+            event(new ActionShouldBeTracked($parameters));
+            return response($buffer, 200);
+        } catch (Exception $exception) {
+            return response('Unprocessable entity', 422);
+        }
+    }
+
+    /**
+     * Get Rss news
+     */
+    public function getRss2News(Request $request): ResponseFactory|Response
+    {
+        //Patch in order to handle original client IP after migration of SI behind CloudFlare
+        if (isset($_SERVER['CF-Connecting-IP'])) {
+            $address = $_SERVER['CF-Connecting-IP'];
+        } else if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            $address = $_SERVER['HTTP_X_FORWARDED_FOR'];
+        } else {
+            $address = $_SERVER['REMOTE_ADDR'] ?? '127.0.0.1';
+        }
+
+        $parameters = [
+            'address' => $address,
+            'version' => $request->input('v', ''),
+            'iso_lang' => strtolower($request->input('lang', 'en')),
+            'referer' => $request->headers->get('referer', ''),
+            'activity' => $request->input('activity', 0),
+            'rss_type' => 15
         ];
         if (!in_array($parameters['iso_lang'], ['es', 'fr', 'it', 'de'])) {
             $parameters['iso_lang'] = 'en';

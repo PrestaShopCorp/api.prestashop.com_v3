@@ -59,6 +59,6 @@ class RssService
         $this->checkParameters($parameters);
         getTranslations($parameters['iso_lang']);
         $xmlItems = $this->getXMLInformations($parameters);
-        return view('rss_news', ['parameters' => $parameters, 'xml_items' => $xmlItems])->render();
+        return view('rss_news_' . $parameters['rss_type'], ['parameters' => $parameters, 'xml_items' => $xmlItems])->render();
     }
 }

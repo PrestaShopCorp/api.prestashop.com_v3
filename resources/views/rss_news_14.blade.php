@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" >
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link rel="stylesheet" media="screen" type="text/css" title="" href="/css/news3.css" />
+    <link rel="stylesheet" media="screen" type="text/css" title="" href="/css/news_14.css" />
 </head>
 <body>
 <h5 class="newsTitle"><a href="http://www.prestashop.com/blog/" target="_blank">{{ l('View more') }}</a> {{ l('PrestaShop News !') }}</h5>
@@ -12,7 +12,7 @@
             @if ($loop->first)
                 <li id="block_news_first">
                     <a href="{{ $item['link'] }}" target="_blank">
-                        {{ Str::limit($item['title'], 40, preserveWords: true) }}
+                        {{ truncate($item['title'], 40) }}
                     </a>
                     <p>
                         {{ Str::limit($item['description'], 150, '...') }}
@@ -26,7 +26,7 @@
             @else
                 <li class="block_news_{{ $loop->index % 2 ? 'odd' : 'pair' }}">
                     <a href="{{ $item['link'] }}" target="_blank">
-                        {{ Str::limit($item['title'], 40, preserveWords: true) }}
+                        {{ truncate($item['title'], 40) }}
                     </a>
                 </li>
             @endif
@@ -36,6 +36,7 @@
 <br clear="left" />
 <div id="table_info_news">
     <ul>
+
         <li id="block_news_last">
             <ul>
                 <li id="see_newsletter">
