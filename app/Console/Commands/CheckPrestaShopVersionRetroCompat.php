@@ -83,6 +83,8 @@ class CheckPrestaShopVersionRetroCompat extends Command
                 //$this->checkVersion($matches[1]);
             } else if (str_starts_with($matches[1], '/iframe/install.php')) {
                 //
+            } else if (str_starts_with($matches[1], '/rss/news2.php')) {
+                //
             } else {
                 echo "Testing Call: " . $matches[1] . "\n\n";
             }

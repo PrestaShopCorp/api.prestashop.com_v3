@@ -13,3 +13,4 @@ Route::get('/user', function (Request $request) {
 Route::get('/version/check_version.php', [PrestashopVersionController::class, 'checkVersion']);
 Route::get('/iframe/install.php', [InstallationSupportController::class, 'getInstallationHelp']);
 Route::get('/rss/news2.php', [RssController::class, 'getRssNews']);
+Route::get('/rss2/news2.php', [RssController::class, 'getRss2News']);
