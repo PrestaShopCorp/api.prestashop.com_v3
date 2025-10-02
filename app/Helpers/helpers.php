@@ -26,6 +26,13 @@ if (! function_exists('getTranslations')) {
     }
 }
 
+if (! function_exists('getImageUrl')) {
+    function getImageUrl(string $url): string
+    {
+        return getenv('SERVER_URL') . $url;
+    }
+}
+
 if (! function_exists('truncate')) {
     function truncate($text, $length = 50, $ending = '...', $exact = false, $considerHtml = true)
     {

@@ -1,0 +1,19 @@
+<?php
+$tip = [
+    'title' => 'Le conseil du jour proposé par',
+    'url' => 'http://addons.prestashop.com/fr/modules-paiement-prestashop/1748-paypal.html?utm_source=back-office&utm_medium=tipoftheday&utm_campaign=partenariats&utm_content=paypal',
+    'advices' => [
+        ['title' => 'Ne passez pas à côté de l’opportunité du mobile', 'advice' => '+267% de progression du m-commerce en 2 ans ! PayPal et PrestaShop vous proposent ce <a href="http://addons.prestashop.com/fr/mobile/6165-prestashop-theme-mobile-14.html?utm_source=back-office&utm_medium=tipoftheday&utm_campaign=partenariats&utm_content=paypal" target="_blank">thème gratuit optimisé</a> pour le paiement via mobile.'],
+        ['title' => 'Adoptez une approche multi-canal', 'advice' => 'Votre boutique est accessible à n’importe quel moment et vous vous adaptez donc aux contraintes de vos clients : découvrez <a href="http://addons.prestashop.com/fr/mobile/6165-prestashop-theme-mobile-14.html?utm_source=back-office&utm_medium=tipoftheday&utm_campaign=partenariats&utm_content=paypal" target="_blank">le thème mobile gratuit optimisé</a> pour PrestaShop.'],
+        ['title' => 'Suivez l\'évolution de votre activité en direct', 'advice' => 'PayPal vous envoie une notification par email pour chaque transaction réalisée sur votre site.'],
+        ['title' => 'Proposez des moyens de paiement gratuits* à vos clients', 'advice' => 'N\'imposez pas de frais supplémentaires à  vos acheteurs. Avec le module PayPal, ils bénéficient de toutes les garanties de sécurité sans surcoût*.<br /><br />*En Euros, dans l\'Espace Economique Européen'],
+        ['title' => 'Offrez à vos clients la garantie Livré ou remboursé*', 'advice' => 'Avec PayPal, vos acheteurs sont livrés ou remboursés*. N\'hésitez pas à en faire un argument commercial pour votre site.<br /><p align="center"><img src="/img/tips/paypal-advise-picto4.png" /></p><br />*voir conditions et exceptions <a href="https://cms.paypal.com/fr/cgi-bin/?cmd=_render-content&content_ID=security_fr/paypal_purchase_protection" target="_blank">ici</a>'],
+        ['title' => 'Attirez de nouveaux clients', 'advice' => 'En France, 1 cyber acheteur sur 3 possède un compte PayPal*. Ne passez pas à côté de ces clients potentiels.<br /><br /><small>Source : Etude réalisée par Northstar en mars 2013 auprès de 1914 acheteurs PayPal en France</small>'],
+        ['title' => 'Ne faites pas l\'impasse sur la carte bancaire', 'advice' => '79%* des internautes paient avec une carte bancaire. Avec PayPal, acceptez les paiements par carte Visa ou Mastercard.<br /><br /><small>*Journal Du Net, Mars 2013</small>'],
+        ['title' => 'Développez votre activité à l\'international', 'advice' => 'Avec PayPal vous êtes déjà présent dans 190 pays et vous pouvez accepter des paiements dans 24 devises différentes !'],
+        ['title' => 'Ne limitez pas votre activité au marché français, pensez à vos voisins...', 'advice' => 'Vendre en Italie, en Espagne, en Belgique... C\'est aussi simple que de vendre en France avec PayPal.<br /><br /><small>*Journal Du Net, Mars 2013</small>'],
+        ['title' => 'Mettez vos moyens de paiement en avant', 'advice' => 'Vos clients doivent savoir qu\'ils peuvent utiliser le moyen de paiement qui leur convient dès la home page.<p align="center"><img src="/img/tips/paypal-advise-picto1.png" style="max-width: 100%; padding: 5px 0px 5px 0px;"></p>'],
+        ['title' => 'Proposez un maximum de moyens de paiement', 'advice' => 'Plus vous proposez de moyens de paiement, plus vous faites de ventes. Avec PayPal, proposez 7 moyens de paiement en installant un seul module.<p align="center"><img src="/img/tips/paypal-advise-picto1.png" style="max-width: 100%; padding: 5px 0px 5px 0px;"></p>'],
+    ],
+    'more_info' => 'Envie d\'en savoir plus ?'
+];
