@@ -57,7 +57,7 @@ class RssService
     public function getNews(array $parameters): string
     {
         $this->checkParameters($parameters);
-        getTranslations($parameters['iso_lang']);
+        getTranslations('global', $parameters['iso_lang']);
         $xmlItems = $this->getXMLInformations($parameters);
         return view('rss_news_' . $parameters['rss_type'], ['parameters' => $parameters, 'xml_items' => $xmlItems])->render();
     }

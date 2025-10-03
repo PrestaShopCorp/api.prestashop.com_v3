@@ -81,7 +81,7 @@ class PrestashopVersionCheckerService
     public function checkPrestaShopVersion(array $parameters): string
     {
         $this->checkParameters($parameters);
-        getTranslations($parameters['iso_lang']);
+        getTranslations('global', $parameters['iso_lang']);
         $newVersionCheck = $this->checkNewVersion($parameters['version'], $parameters['iso_lang']);
         return view('prestashop_version_update', ['parameters' => $parameters, 'new_version_check' => $newVersionCheck])->render();
     }

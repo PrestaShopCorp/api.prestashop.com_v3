@@ -71,7 +71,7 @@ class CheckPrestaShopVersionRetroCompat extends Command
     public function handle(): void
     {
         ini_set('memory_limit', '4096M');
-        $fileName = resource_path() . '/txt/api_calls2.txt';
+        $fileName = storage_path() . '/txt/api_calls2.txt';
         $fileContents = file_get_contents($fileName);
         $calls = explode("\n", $fileContents);
         echo "count = " . sizeof($calls) . "\n";
@@ -88,6 +88,10 @@ class CheckPrestaShopVersionRetroCompat extends Command
             } else if (str_starts_with($matches[1], '/rss/news2.php')) {
                 //
             } else if (str_starts_with($matches[1], '/rss2/news2.php')) {
+                //
+            } else if (str_starts_with($matches[1], '/partner/tipsoftheday/')) {
+                //
+            } else if (str_starts_with($matches[1], '/partner/preactivation/preactivation-warnings.php')) {
                 //
             } else {
                 echo "Testing Call: " . $matches[1] . "\n\n";
