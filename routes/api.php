@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\InstallationSupportController;
+use App\Http\Controllers\API\PartnerController;
 use App\Http\Controllers\API\PrestashopVersionController;
 use App\Http\Controllers\API\RssController;
 use App\Http\Controllers\API\TipsOfTheDayController;
@@ -16,3 +17,5 @@ Route::get('/iframe/install.php', [InstallationSupportController::class, 'getIns
 Route::get('/rss/news2.php', [RssController::class, 'getRssNews']);
 Route::get('/rss2/news2.php', [RssController::class, 'getRss2News']);
 Route::get('/partner/tipsoftheday/', [TipsOfTheDayController::class, 'getTipsOfTheDay']);
+Route::get('/partner/preactivation/preactivation-warnings.php', [PartnerController::class, 'getPreactivationWarnings']);
+Route::get('/partner/prestashop/prestashop-link.php', [PartnerController::class, 'getPrestaShopLink']);

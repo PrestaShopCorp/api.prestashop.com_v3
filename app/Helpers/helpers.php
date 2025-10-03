@@ -18,10 +18,10 @@ if (! function_exists('l')) {
 }
 
 if (! function_exists('getTranslations')) {
-    function getTranslations(string $isoCode): void
+    function getTranslations(string $module, string $isoCode): void
     {
         global $_translations;
-        $fileName = resource_path() . '/translations/' . strtolower(trim($isoCode)) . '.json';
+        $fileName = resource_path() . '/translations/' . $module . '/' . strtolower(trim($isoCode)) . '.json';
         $_translations = file_exists($fileName) ? json_decode(file_get_contents($fileName), true) : [];
     }
 }
