@@ -61,4 +61,13 @@ class RssService
         $xmlItems = $this->getXMLInformations($parameters);
         return view('rss_news_' . $parameters['rss_type'], ['parameters' => $parameters, 'xml_items' => $xmlItems])->render();
     }
+
+    /**
+     * @param string $isoLang
+     * @return void
+     */
+    public function importRssBlogByLanguage(string $isoLang): void
+    {
+        exec('wget -q -O ' . storage_path('app/public/xml/blog/') . 'blog-' . $isoLang . '.xml "https://www.prestashop.com/' . $isoLang . '/blog/feed.xml"', $output);
+    }
 }
